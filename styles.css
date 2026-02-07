@@ -288,17 +288,6 @@ a{ color:#ffd1e5 }
   .yesZone{
     padding: 0;              /* cleaner */
   }
-  .no{
-      max-width: 150px;            /* fixed width */
-      max-width: 100%;
-      white-space: normal;     /* allow wrapping */
-      line-height: 1.2;
-      text-align: center;
-
-      display: inline-block;   /* stable box for wrapping */
-      overflow-wrap: anywhere; /* prevent cut-off for long strings */
-      word-break: break-word;
-    }
 
   .noZone{
     width: 100%;
@@ -313,6 +302,17 @@ a{ color:#ffd1e5 }
     margin-bottom: 30px;
     }
 
+  .no{
+                    /* fixed width */
+        max-width: 150px;
+        white-space: normal;     /* allow wrapping */
+        line-height: 1.2;
+        text-align: center;
+
+        display: inline-block;   /* stable box for wrapping */
+        overflow-wrap: anywhere; /* prevent cut-off for long strings */
+        word-break: break-word;
+      }
 
   .result{
     /*padding: 8px 10px;
@@ -323,13 +323,13 @@ a{ color:#ffd1e5 }
     right: 16px;
     bottom: 16px;
 
-    margin-top: 0;        /* stop creating space */
+    margin-top: 0px;        /* stop creating space */
     z-index: 5;           /* sit above the NO zone */
     pointer-events: none;
   }
 
   .result h2{
-    font-size: 18px;      /* was ~20px */
+    font-size: 15px;      /* was ~20px */
     margin-bottom: 4px;
   }
 
