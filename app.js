@@ -221,7 +221,7 @@ noBtn.addEventListener("click", () => {
 
   const msgIndex = Math.min(noClickCount - 1, noClickMessages.length - 1);
   result.classList.add("show");
-  yayTitle.textContent = "😏";
+  yayTitle.textContent = "";
   yayMsg.textContent = noClickMessages[msgIndex];
 
   if (noClickCount >= NO_CLICK_LIMIT) {

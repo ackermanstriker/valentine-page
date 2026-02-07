@@ -34,7 +34,7 @@ window.APP_CONFIG = {
   YES2_TITLE: "You're locked in 😏💖",
   YES2_MSG: "Can't escape now... 🏃‍➡️🏃‍➡️🏃‍➡️",
 
-  FINAL_TITLE: "That's all the chances you are going to get Paglu...💘",
+  FINAL_TITLE: "Those are all the chances you're going to get Paglu...💘",
   FINAL_MSG: "YOU ARE MINE!!!! 🥰 ",
 
   // Confetti palette (sunset theme)
