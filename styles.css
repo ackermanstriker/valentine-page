@@ -179,19 +179,32 @@ a{ color:#ffd1e5 }
 
 /* Mobile: allow NO button text to wrap */
 @media (max-width: 430px) {
-  .no{
-    white-space: normal;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    padding: 10px 12px;
-    line-height: 1.2;
-    text-align: center;
+/* Stack YES above NO zone */
+  .row{
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
+
+  .yesZone{
+    padding: 0;              /* cleaner */
+  }
+  .no{
+      width: 150px;            /* fixed width */
+      max-width: 100%;
+      white-space: normal;     /* allow wrapping */
+      line-height: 1.2;
+      text-align: center;
+
+      display: inline-block;   /* stable box for wrapping */
+      overflow-wrap: anywhere; /* prevent cut-off for long strings */
+      word-break: break-word;
+    }
 
   .noZone{
     width: 100%;
-    min-height: 140px;
-    overflow: visible;
+    min-height: 220px;       /* 👈 bigger wiggle room */
+    padding: 0px;
+    overflow: hidden;        /* keep NO inside playground */
+    align-items: flex-start;
   }
 }

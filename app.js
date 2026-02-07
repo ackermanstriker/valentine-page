@@ -43,12 +43,14 @@ let noClickCount = 0;
 
 // Start in dodge visual state
 noBtn.classList.add("blocked");
+let lastPos = { x: null, y: null };
 
 // ================= Helpers =================
 function resetNoButtonPosition() {
   noBtn.style.position = "";
   noBtn.style.left = "";
   noBtn.style.top = "";
+  lastPos = { x: null, y: null };
 }
 
 function resetDodgeState() {
@@ -100,20 +102,50 @@ function temporarilyDisableYes(duration = RESET_MS) {
 function moveNoButton() {
   const zoneRect = noZone.getBoundingClientRect();
   const btnRect = noBtn.getBoundingClientRect();
-  const padding = 6;
+  const padding = 8;
 
   const minX = padding;
   const minY = padding;
   const maxX = Math.max(minX, zoneRect.width - btnRect.width - padding);
   const maxY = Math.max(minY, zoneRect.height - btnRect.height - padding);
 
-  const x = Math.random() * (maxX - minX) + minX;
-  const y = Math.random() * (maxY - minY) + minY;
+  // If the zone is tiny, just place it normally
+  if (maxX === minX && maxY === minY) {
+    noBtn.style.position = "absolute";
+    noBtn.style.left = minX + "px";
+    noBtn.style.top = minY + "px";
+    return;
+  }
+
+  // Minimum jump distance (bigger on mobile)
+  const isMobile = window.matchMedia("(max-width: 430px)").matches;
+  const minJump = isMobile ? 70 : 40;
+
+  let x, y, tries = 0;
+
+  do {
+    x = Math.random() * (maxX - minX) + minX;
+    y = Math.random() * (maxY - minY) + minY;
+    tries++;
+
+    if (lastPos.x === null) break;
+
+    const dx = x - lastPos.x;
+    const dy = y - lastPos.y;
+    const dist = Math.hypot(dx, dy);
+
+    // try again if too close (but don't loop forever)
+    if (dist >= minJump) break;
+
+  } while (tries < 12);
+
+  lastPos = { x, y };
 
   noBtn.style.position = "absolute";
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
 }
+
 
 function updateNoTextForDodge() {
   if (dodgeTexts.length === 1) {
@@ -137,12 +169,17 @@ function dodge() {
 
   dodgeLevel++;
   updateNoTextForDodge();
-  moveNoButton();
 
-  if (dodgeLevel === maxDodge) {
-    noBtn.classList.remove("blocked");
-  }
+  // let the browser apply the new text width before measuring
+  requestAnimationFrame(() => {
+    moveNoButton();
+
+    if (dodgeLevel === maxDodge) {
+      noBtn.classList.remove("blocked");
+    }
+  });
 }
+
 
 noBtn.addEventListener("mouseenter", dodge);
 noBtn.addEventListener("touchstart", dodge, { passive: true });
