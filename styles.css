@@ -261,10 +261,12 @@ button:active{ transform: scale(.98) }
  }
 .result h2{
   color: var(--sunset-text);
+  font-size: clamp(20px, 5.2vw, 20px)
 }
 
 .result p{
   color: var(--sunset-soft);
+  font-size: clamp(14px, 3.8vw, 14px);
 }
 
 canvas#confetti{
