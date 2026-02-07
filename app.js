@@ -283,51 +283,90 @@ function resize() {
 addEventListener("resize", resize);
 resize();
 
+// --- Sunset Sparkles (theme-appropriate) ---
+let particles = [];
+let animRunning = false;
+
+
 function popConfetti() {
-  const pieces = 180;
+  // burst from roughly the center of the card
+  const cardRect = document.getElementById("card").getBoundingClientRect();
+  const cx = cardRect.left + cardRect.width / 2;
+  const cy = cardRect.top + cardRect.height / 2;
 
-  confetti = Array.from({ length: pieces }, () => ({
-    x: Math.random() * canvas.width,
-    y: -20 - Math.random() * canvas.height * 0.2,
-    r: 4 + Math.random() * 5,
-    vx: -2 + Math.random() * 4,
-    vy: 2 + Math.random() * 4,
-    rot: Math.random() * Math.PI,
-    vr: -0.15 + Math.random() * 0.3,
-    life: 120 + Math.random() * 60
-  }));
+  const count = 150;
+  const sunsetHues = [18, 24, 30, 36, 300, 285]; // orange -> peach + a hint of purple
 
-  requestAnimationFrame(tick);
+  for (let i = 0; i < count; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 1.4 + Math.random() * 3.6;
+
+    particles.push({
+      x: cx,
+      y: cy,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      drag: 0.985,
+      gravity: 0.012 + Math.random() * 0.015,   // gentle downward drift
+      r: 1.4 + Math.random() * 3.6,
+      hue: sunsetHues[Math.floor(Math.random() * sunsetHues.length)],
+      a: 0.9,
+      life: 130 + Math.random() * 90,
+      maxLife: 220,
+      tw: Math.random() * 2 * Math.PI,       // twinkle phase
+      glow: 8 + Math.random() * 14
+    });
+  }
+
+  if (!animRunning) {
+    animRunning = true;
+    requestAnimationFrame(tick);
+  }
 }
 
 function tick() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  confetti.forEach((p) => {
+  particles.forEach(p => {
+    // motion
+    p.vx *= p.drag;
+    p.vy = (p.vy * p.drag) + p.gravity;
     p.x += p.vx;
     p.y += p.vy;
-    p.vy += 0.03;
-    p.rot += p.vr;
+
+    // life
     p.life -= 1;
+    p.a = Math.max(0, Math.min(1, p.life / 180));
 
+    // twinkle
+    p.tw += 0.18;
+    const twinkle = 0.75 + 0.25 * Math.sin(p.tw);
+
+    // draw glow
     ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.rotate(p.rot);
+    ctx.globalAlpha = p.a * twinkle;
 
-    ctx.globalAlpha = Math.max(0, Math.min(1, p.life / 180));
+    ctx.shadowBlur = p.glow;
+    ctx.shadowColor = `hsla(${p.hue}, 95%, 65%, ${p.a})`;
+    ctx.fillStyle = `hsl(${p.hue}, 95%, ${60 + Math.random() * 10}%)`;
 
-    const hue = SUNSET_HUES[Math.floor(Math.random() * SUNSET_HUES.length)];
-    const lightness = 60 + Math.random() * 15;
-
-    ctx.fillStyle = `hsl(${hue}, 95%, ${lightness}%)`;
-    ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
 
     ctx.restore();
   });
 
-  confetti = confetti.filter(
-    (p) => p.life > 0 && p.y < canvas.height + 40
+  particles = particles.filter(p =>
+    p.life > 0 &&
+    p.x > -50 && p.x < canvas.width + 50 &&
+    p.y > -50 && p.y < canvas.height + 50
   );
 
-  if (confetti.length) requestAnimationFrame(tick);
+  if (particles.length) {
+    requestAnimationFrame(tick);
+  } else {
+    animRunning = false;
+  }
 }
+

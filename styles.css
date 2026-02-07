@@ -212,6 +212,7 @@ button:active{ transform: scale(.98) }
 .yes{
   background: linear-gradient(135deg, #ff8a00, #ff3d00);
   color:var(--sunset-text);
+  min-width: 110px;
   box-shadow:
       0 10px 30px var(--sunset-glow),
       0 0 12px rgba(255,160,80,.25);
@@ -288,7 +289,7 @@ a{ color:#ffd1e5 }
     padding: 0;              /* cleaner */
   }
   .no{
-      width: 150px;            /* fixed width */
+      max-width: 150px;            /* fixed width */
       max-width: 100%;
       white-space: normal;     /* allow wrapping */
       line-height: 1.2;
