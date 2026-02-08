@@ -33,7 +33,7 @@ window.APP_CONFIG = {
   TEASE_TITLE: "",
   TEASE_MSG: "My Oh MY! Sooo Naughty!! 😈",
   YES1_TITLE: "YAY!! 🎉💘",
-  YES1_MSG: "You've chosen wisely 😏",
+  YES1_MSG: "You've chosen wisely 😉",
   YES2_TITLE: "You're locked in. 😎",
   YES2_MSG: "Can't escape now... 🏃‍➡️🏃‍➡️🏃‍➡️",
 
