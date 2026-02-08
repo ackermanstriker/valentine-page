@@ -104,21 +104,26 @@ function moveNoButton() {
   const btnRect = noBtn.getBoundingClientRect();
   const padding = 8;
 
+  const isMobile = window.matchMedia("(max-width: 430px)").matches;
+
   const minX = padding;
   const minY = padding;
   const maxX = Math.max(minX, zoneRect.width - btnRect.width - padding);
-  const maxY = Math.max(minY, zoneRect.height - btnRect.height - padding);
+
+  // must match your mobile CSS: .noZone { padding-bottom: 78px; }
+  const safeBottom = isMobile ? 78 : 0;
+  const maxY = Math.max(minY, zoneRect.height - btnRect.height - padding - safeBottom);
 
   // If the zone is tiny, just place it normally
   if (maxX === minX && maxY === minY) {
     noBtn.style.position = "absolute";
     noBtn.style.left = minX + "px";
     noBtn.style.top = minY + "px";
+    lastPos = { x: minX, y: minY };
     return;
   }
 
   // Minimum jump distance (bigger on mobile)
-  const isMobile = window.matchMedia("(max-width: 430px)").matches;
   const minJump = isMobile ? 70 : 40;
 
   let x, y, tries = 0;
@@ -128,7 +133,7 @@ function moveNoButton() {
     y = Math.random() * (maxY - minY) + minY;
     tries++;
 
-    if (lastPos.x === null) break;
+    if (!lastPos || lastPos.x === null || lastPos.y === null) break;
 
     const dx = x - lastPos.x;
     const dy = y - lastPos.y;
