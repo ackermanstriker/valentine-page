@@ -266,7 +266,7 @@ noBtn.addEventListener("click", () => {
   yayTitle.textContent = "";
   yayMsg.textContent = noClickMessages[msgIndex];
 
-  if (noClickCount >= NO_CLICK_LIMIT) {
+  if (noClickCount > NO_CLICK_LIMIT) {
     lockEverythingFinal();
     return;
   }

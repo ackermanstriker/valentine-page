@@ -3,7 +3,7 @@
 
 window.APP_CONFIG = {
   // Timing
-  RESET_MS: 4000,
+  RESET_MS: 3000,
 
   // Dodge behavior
   MAX_DODGE: 7,
